@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Nour El-Sayed",
+    "phoneNumber": "6644848971",
+    "maxGuests": 2,
+    "response": "Pending"
+  },
+  {
+    "name": "Tesneem Mahmoud",
+    "phoneNumber": "6644848972",
+    "maxGuests": 7,
+    "response": "Pending"
+  },
+  {
+    "name": "Dr. Sarah Johnson",
+    "phoneNumber": "6644848973",
+    "maxGuests": 4,
+    "response": "Pending"
+  },
+  {
+    "name": "Mr. David Johnson",
+    "phoneNumber": "6644848974",
+    "maxGuests": 1,
+    "response": "Pending"
+  },
+  {
+    "name": "Eliza Johnson",
+    "phoneNumber": "6644848975",
+    "maxGuests": 1,
+    "response": "Pending"
+  }
+]
