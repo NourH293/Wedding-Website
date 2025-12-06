@@ -13,21 +13,27 @@ const weddingData = {
   coupleNames: 'Nour-Eldeen & Tesneem',
   date: 'Saturday, April 11, 2026',
   announcement:
-    'We are thrilled to invite you to celebrate our marriage at the Islamic Center of Chester County in West Chester, PA.',
-  rsvpDeadline: 'Januairy 1st, 2026',
+    'We are thrilled to invite you to celebrate our marriage at the Islamic Center of Chester County.',
+  address: '1001 Pottstown Pike, West Chester, PA 19380',
+  rsvpDeadline: 'January 30th, 2026',
   gifts: {
     message:
       'Your presence is the greatest gift of all. However, if you wish to honor us with a gift, we prefer envelope gifts, or click the link below.',
-    links: [
-      { name: 'Zelle', link: '#' },
-      { name: 'Venmo', link: 'https://account.venmo.com/u/neemster' },
-    ],
+    links: [{ name: 'Venmo', link: 'https://account.venmo.com/u/neemster' }],
   },
   hotels: {
     message: "We've reserved blocks of rooms at a few nearby hotels for your convenience.",
     options: [
-      { name: 'The Dewberry Charleston', link: '#', rate: '$289/night' },
-      { name: 'Hilton Garden Inn Downtown', link: '#', rate: '$199/night' },
+      {
+        name: 'Hotel Indigo West Chester',
+        link: 'https://www.ihg.com/hotels/us/en/find-hotels/select-roomrate?fromRedirect=true&qSrt=sAV&qIta=99618783&icdv=99618783&glat=META&qSlH=PHLWE&qRms=1&qAdlt=2&qChld=0&qCiD=11&qCiMy=032026&qCoD=12&qCoMy=032026&qrtPt=287.00&setPMCookies=true&qSlRc=KIEN&qRtP=IDAPF&qSHBrC=IN&qDest=39%20E.%20Gay%20Street,%20West%20Chester,%20PA,%20US&partnerVerification=false&channel=GHPA&userSelectedRatePlan=KIENIDAPF&userBookingWindow=126&hmGUID=0a183bac-e5c8-4ad5-9b57-dd9e8918d97f&clk_src=bl&isHotelCampaign=true&partnerRateShown=287.00&gbraid=0AAAAAD4keY88ADSUlHqI98N34aKkatdgh&partnerDateType=selected&mktgvar=hpa_paid_US_desktop_PHLWE_mapresults_1_USD_2026-04-11_selected_22712888848__FALSE_KIENIDAPF&userCountryCode=US&partnerTotalRateShown=318.57&userDeviceType=desktop&adjustMonth=true&partnerClickType=hotel&partnerCurrencyCode=USD&partnerAdSite=mapresults&cm_mmc=hpa_paid_META_IN_PHLWE_desktop&partnerAdType=paid&srb_u=1&qRmFltr=',
+        rate: '$273/night',
+      },
+      {
+        name: 'Hotel Warner',
+        link: 'https://www.hotelwarner.com/engine/bookingstep1.html?idtokenprovider=100380153&checkin=11%2F04%2F2026&nights=1&lang=en&hsri=02040&adults=2&children=0&ages=0&babies=0&currency=USD&rates=NjQ0MDB8ODEyMzB8NDMyODYzYjB8NDk0Mzl8NDM4MjIz&tracking=&UserDevice=desktop&clickorigin=NOT-RBM&date_type=selected&campaign_id=organic&googlesite=mapresults&tt_meta=gha&PPA1=FALSE&user_list_id=&clk_src=&prid=&step=1&home=https%3A%2F%2Fwww.hotelwarner.com%2F&parties=WyB7CiAgImFkdWx0cyIgOiAyLAogICJjaGlsZHJlbiIgOiBbIF0KfSBd#url=true',
+        rate: '$213/night',
+      },
     ],
   },
 }
@@ -109,6 +115,9 @@ onUnmounted(() => {
         <h2 class="text-lg sm:text-xl font-semibold text-pink-600 mb-4">Are Getting Married!</h2>
         <p class="text-base sm:text-lg text-gray-700 font-medium italic">
           {{ weddingData.announcement }}
+        </p>
+        <p class="text-base sm:text-lg text-gray-700 font-medium italic">
+          {{ weddingData.address }}
         </p>
         <p class="mt-4 text-2xl font-bold text-gray-900">
           {{ weddingData.date }}
@@ -199,8 +208,7 @@ onUnmounted(() => {
             >
               <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ option.name }}</h3>
               <p class="text-md text-gray-600 mb-4">
-                <span class="font-semibold text-pink-600">{{ option.rate }}</span> (Special Wedding
-                Rate)
+                <span class="font-semibold text-pink-600">{{ option.rate }}</span>
               </p>
               <a
                 :href="option.link"

@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { AlertTriangle, UserCheck, X, Search, Users, Loader2, Phone, Hash } from 'lucide-vue-next'
 
 // --- CONFIGURATION ---
 // Base URL for the self-hosted Django API backend
 // IMPORTANT: Update this to your deployed backend URL (e.g., 'https://api.yourdomain.com')
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = ''
 // API Endpoints
 const API_ENDPOINTS = {
   GUESTS: `${API_BASE_URL}/api/guests/`,
@@ -13,6 +14,7 @@ const API_ENDPOINTS = {
 }
 
 // Reactive state
+const router = useRouter()
 const allGuests = ref([])
 const searchNameOrPhone = ref('')
 const searchResults = ref([])
@@ -25,6 +27,8 @@ const showMessage = ref({ type: '', text: '' })
 const isRsvpSubmitted = ref(false)
 
 // --- UTILITIES ---
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 /**
  * Sanitizes input string to remove potential script injections or malicious characters.
@@ -295,15 +299,19 @@ const submitRsvp = async () => {
     isRsvpSubmitted.value = true
     showMessage.value = {
       type: 'success',
-      text: `Thank you, ${selectedHeadGuest.value.name}! Your RSVP has been successfully recorded as ${newResponse} (${finalAttendingCount} attending).`,
+      text: `Thank you, ${selectedHeadGuest.value.name}! Your RSVP has been successfully recorded as ${newResponse} (${finalAttendingCount} attending). Redirecting you to the Home page.`,
     }
-
-    // Re-fetch data to reflect changes immediately across the app
-    await fetchGuestData()
 
     // Reset search state
     searchNameOrPhone.value = ''
     selectedHeadGuest.value = null
+
+    await delay(2000)
+
+    // Re-fetch data to reflect changes immediately across the app
+    await fetchGuestData()
+
+    router.push('/')
   } catch (error) {
     console.error('Error submitting RSVP:', error)
     showMessage.value = { type: 'error', text: `Failed to submit RSVP: ${error.message}.` }
@@ -319,16 +327,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- Added 'relative' to this container to position the absolute button -->
   <div class="min-h-screen bg-gray-50 font-sans text-gray-800 p-4 sm:p-8 relative">
-    <!-- HOME BUTTON -->
-    <a
-      href="/"
-      class="absolute top-4 left-4 text-sm font-bold text-black no-underline hover:text-gray-600 transition-colors"
-    >
-      Home
-    </a>
-
     <div class="max-w-3xl mx-auto py-12 bg-white rounded-xl shadow-2xl border border-pink-100">
       <header class="text-center mb-10 px-6">
         <h1 class="text-5xl font-serif text-pink-600 mb-3">RSVP</h1>
@@ -527,7 +526,7 @@ onMounted(() => {
             :disabled="isLoading"
           >
             <Loader2 v-if="isLoading" class="w-5 h-5 mr-2 animate-spin" />
-            <span v-else>Confirm RSVP for {{ selectedHeadGuest.family }}</span>
+            <span v-else>Confirm RSVP for {{ selectedHeadGuest.name }} and Family</span>
           </button>
 
           <button
@@ -541,10 +540,8 @@ onMounted(() => {
       </section>
     </div>
 
-    <!-- Debugging / API Info -->
-    <div class="max-w-3xl mx-auto mt-4 p-4 text-xs text-gray-400">
-      <p>API Base URL: {{ API_BASE_URL }}</p>
-      <p>Total Guests Loaded: {{ allGuests.length }}</p>
+    <div class="flex items-center justify-center max-w-3xl mx-auto mt-4 p-4 text-gray-400">
+      <a href="/" class="font-bold no-underline hover:text-gray-600 transition-colors"> Home </a>
     </div>
   </div>
 </template>
