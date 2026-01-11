@@ -1,7 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { AlertTriangle, UserCheck, X, Search, Users, Loader2, Phone, Hash } from 'lucide-vue-next'
+import {
+  AlertTriangle,
+  UserCheck,
+  X,
+  Search,
+  Users,
+  Loader2,
+  CheckCircle2,
+  Hash,
+} from 'lucide-vue-next'
 
 // --- CONFIGURATION ---
 // Base URL for the self-hosted Django API backend
@@ -25,6 +34,8 @@ const maxFamilyGuests = ref(0) // NEW: Maximum guests allowed for the family
 const isLoading = ref(true)
 const showMessage = ref({ type: '', text: '' })
 const isRsvpSubmitted = ref(false)
+const isSuccess = ref(false)
+const statusMessage = ref('Processing Request...')
 
 // --- UTILITIES ---
 
@@ -101,7 +112,7 @@ const fetchGuestData = async () => {
     allGuests.value = data
     showMessage.value = {
       type: 'info',
-      text: `Connected to API. Ready to search among ${data.length} guests.`,
+      text: `Connected to API. Ready to search.`,
     }
   } catch (error) {
     console.error('Error fetching guest data from API:', error)
@@ -306,7 +317,15 @@ const submitRsvp = async () => {
     searchNameOrPhone.value = ''
     selectedHeadGuest.value = null
 
+    isSuccess.value = true
+    isLoading.value = false
+    statusMessage.value = 'Success'
+
     await delay(2000)
+
+    isSuccess.value = false
+    isLoading.value = true
+    statusMessage.value = 'Processing Request...'
 
     // Re-fetch data to reflect changes immediately across the app
     await fetchGuestData()
@@ -328,9 +347,9 @@ onMounted(() => {
 
 <template>
   <div class="min-h-screen bg-gray-50 font-sans text-gray-800 p-4 sm:p-8 relative">
-    <div class="max-w-3xl mx-auto py-12 bg-white rounded-xl shadow-2xl border border-pink-100">
+    <div class="max-w-3xl mx-auto py-12 bg-white rounded-xl shadow-2xl border border-blue-100">
       <header class="text-center mb-10 px-6">
-        <h1 class="text-5xl font-serif text-pink-600 mb-3">RSVP</h1>
+        <h1 class="text-5xl font-serif text-blue-600 mb-3">RSVP</h1>
         <p class="text-lg text-gray-600">
           Please search for your name or phone number to confirm attendance.
         </p>
@@ -339,10 +358,15 @@ onMounted(() => {
       <!-- Loading & Message Area -->
       <div class="px-6 mb-8">
         <!-- Global Loader -->
-        <div v-if="isLoading" class="flex items-center justify-center p-4 text-pink-600">
-          <Loader2 class="w-6 h-6 animate-spin mr-2" />
-          <span v-if="allGuests.length === 0">Connecting to Self-Hosted API...</span>
-          <span v-else>Processing Request...</span>
+        <div
+          v-if="isLoading || isSuccess"
+          class="flex items-center justify-center p-4 transition-colors duration-300"
+          :class="isSuccess ? 'text-green-600' : 'text-blue-600'"
+        >
+          <Loader2 v-if="isLoading" class="w-6 h-6 animate-spin mr-2" />
+          <CheckCircle2 v-if="isSuccess" class="w-6 h-6 mr-2" />
+
+          <span>{{ statusMessage }}</span>
         </div>
 
         <!-- Status Messages -->
@@ -377,12 +401,12 @@ onMounted(() => {
             type="text"
             v-model="searchNameOrPhone"
             placeholder="Enter Your Full Name (or Phone Number)"
-            class="flex-grow p-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition duration-150"
+            class="flex-grow p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150"
             :disabled="isLoading"
           />
           <button
             type="submit"
-            class="px-6 py-3 bg-pink-600 text-white font-semibold rounded-lg shadow-md hover:bg-pink-700 transition duration-300 flex items-center justify-center"
+            class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300 flex items-center justify-center"
             :disabled="isLoading || searchNameOrPhone.length < 3"
           >
             <Search class="w-5 h-5 mr-2" /> Find My RSVP
@@ -402,7 +426,7 @@ onMounted(() => {
               v-for="guest in searchResults"
               :key="guest.phoneNumber"
               @click="selectGuest(guest)"
-              class="w-full text-left p-3 bg-white border border-gray-300 rounded-md hover:bg-pink-50 hover:border-pink-500 transition duration-150 shadow-sm"
+              class="w-full text-left p-3 bg-white border border-gray-300 rounded-md hover:bg-blue-50 hover:border-blue-500 transition duration-150 shadow-sm"
             >
               {{ guest.name }} (Phone Number: {{ guest.phoneNumber }})
               <span v-if="(guest.distance || 0) === 0" class="text-green-500 ml-2"
@@ -423,14 +447,14 @@ onMounted(() => {
         </h2>
 
         <!-- Family Information -->
-        <div class="mb-8 p-4 bg-pink-50 border border-pink-200 rounded-lg space-y-3">
-          <p class="font-semibold text-pink-700 flex items-center">
+        <div class="mb-8 p-4 bg-blue-50 border border-blue-200 rounded-lg space-y-3">
+          <p class="font-semibold text-blue-700 flex items-center">
             <Users class="w-4 h-4 mr-2" /> Guests in Your Party:
           </p>
           <ul class="list-disc list-inside text-gray-700 ml-4">
             <li>
               {{ selectedHeadGuest.name }}
-              <span class="text-xs font-medium text-pink-600">(Family Contact)</span>
+              <span class="text-xs font-medium text-blue-600">(Family Contact)</span>
               <span
                 v-if="selectedHeadGuest.response !== 'Pending'"
                 :class="[
@@ -442,7 +466,7 @@ onMounted(() => {
               </span>
             </li>
           </ul>
-          <p class="text-sm font-bold text-pink-800 flex items-center">
+          <p class="text-sm font-bold text-blue-800 flex items-center">
             <Hash class="w-4 h-4 mr-2" /> Maximum guests allowed: {{ maxFamilyGuests }}
           </p>
         </div>
@@ -470,7 +494,7 @@ onMounted(() => {
                 required
               />
               <span class="ml-3 font-medium text-gray-700 flex items-center">
-                <UserCheck class="w-5 h-5 mr-2 text-green-600" /> Yes, We will be celebrating!
+                <UserCheck class="w-5 h-5 mr-2 text-green-600" /> Yes, we will be attending!
               </span>
             </label>
 
@@ -490,7 +514,7 @@ onMounted(() => {
                 required
               />
               <span class="ml-3 font-medium text-gray-700 flex items-center">
-                <X class="w-5 h-5 mr-2 text-red-600" /> No, We unfortunately cannot make it.
+                <X class="w-5 h-5 mr-2 text-red-600" /> No, unfortunately we cannot make it.
               </span>
             </label>
           </fieldset>
@@ -506,7 +530,7 @@ onMounted(() => {
             <select
               id="attending-count"
               v-model.number="attendingCount"
-              class="w-full p-3 border border-gray-300 rounded-lg focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition duration-150"
+              class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition duration-150"
               required
             >
               <option v-for="n in Number(maxFamilyGuests)" :key="n" :value="n">
@@ -522,7 +546,7 @@ onMounted(() => {
 
           <button
             type="submit"
-            class="w-full px-6 py-4 text-xl font-bold text-white bg-pink-600 rounded-lg shadow-lg hover:bg-pink-700 transition duration-300 transform hover:scale-[1.01] flex items-center justify-center"
+            class="w-full px-6 py-4 text-xl font-bold text-white bg-blue-600 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-[1.01] flex items-center justify-center"
             :disabled="isLoading"
           >
             <Loader2 v-if="isLoading" class="w-5 h-5 mr-2 animate-spin" />
@@ -532,7 +556,7 @@ onMounted(() => {
           <button
             @click="((selectedHeadGuest = null), (isRsvpSubmitted = false))"
             type="button"
-            class="w-full text-sm text-gray-500 hover:text-pink-600 mt-4 transition duration-150"
+            class="w-full text-sm text-gray-500 hover:text-blue-600 mt-4 transition duration-150"
           >
             Not me? Change Search
           </button>

@@ -10,19 +10,19 @@ const heroRef = ref(null)
 
 // Static Data
 const weddingData = {
-  coupleNames: 'Nour-Eldeen & Tesneem',
-  date: 'Saturday, April 11, 2026',
+  coupleNames: 'Nour-Eldeen \n&\n Tesneem',
+  date: 'Saturday, April 11, 2026 at 5:45 PM',
   announcement:
-    'We are thrilled to invite you to celebrate our marriage at the Islamic Center of Chester County.',
+    'We are thrilled to invite you to celebrate our marriage at the \nIslamic Center of Chester County.',
   address: '1001 Pottstown Pike, West Chester, PA 19380',
-  rsvpDeadline: 'January 30th, 2026',
+  rsvpDeadline: 'February 14th, 2026',
   gifts: {
     message:
       'Your presence is the greatest gift of all. However, if you wish to honor us with a gift, we prefer envelope gifts, or click the link below.',
     links: [{ name: 'Venmo', link: 'https://account.venmo.com/u/neemster' }],
   },
   hotels: {
-    message: "We've reserved blocks of rooms at a few nearby hotels for your convenience.",
+    message: 'The hotels located closest to the venue are:',
     options: [
       {
         name: 'Hotel Indigo West Chester',
@@ -64,23 +64,23 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 font-sans text-gray-700">
+  <div class="min-h-screen bg-gray-50 font-sans text-black-700">
     <!-- Navigation Bar -->
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm shadow-md">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-center space-x-6">
         <a
           href="#rsvp"
-          class="text-gray-700 hover:text-pink-600 font-medium transition duration-150"
+          class="text-black-700 hover:text-blue-600 font-medium transition duration-150"
           >RSVP</a
         >
         <a
           href="#gifts"
-          class="text-gray-700 hover:text-pink-600 font-medium transition duration-150"
+          class="text-black-700 hover:text-blue-600 font-medium transition duration-150"
           >Gifts</a
         >
         <a
           href="#hotels"
-          class="text-gray-700 hover:text-pink-600 font-medium transition duration-150"
+          class="text-black-700 hover:text-blue-600 font-medium transition duration-150"
           >Hotels</a
         >
       </div>
@@ -107,19 +107,22 @@ onUnmounted(() => {
 
       <!-- Announcement Content -->
       <div
-        class="relative text-center p-6 bg-white/60 backdrop-blur-md rounded-xl shadow-2xl max-w-lg mx-4 border-2 border-white/50"
+        class="relative text-center p-2 sm:p-6 max-w-lg md:max-w-3xl md:p-16 bg-white/60 backdrop-blur-md rounded-xl shadow-2xl mx-4 border-2 border-white/50"
       >
-        <h1 class="text-6xl sm:text-7xl font-serif text-gray-800 tracking-tight mb-2">
+        <h1
+          class="text-5xl sm:text-8xl font-serif text-black-800 tracking-tight mb-2"
+          style="white-space: pre-wrap"
+        >
           {{ weddingData.coupleNames }}
         </h1>
-        <h2 class="text-lg sm:text-xl font-semibold text-pink-600 mb-4">Are Getting Married!</h2>
-        <p class="text-base sm:text-lg text-gray-700 font-medium italic">
+        <h2 class="text-lg sm:text-2xl font-semibold text-black-600 mb-4">Are Getting Married!</h2>
+        <p class="text-base sm:text-xl text-black-700 font-medium" style="white-space: pre-wrap">
           {{ weddingData.announcement }}
         </p>
-        <p class="text-base sm:text-lg text-gray-700 font-medium italic">
+        <p class="text-base text-lg sm:text-xl text-black-700 font-medium">
           {{ weddingData.address }}
         </p>
-        <p class="mt-4 text-2xl font-bold text-gray-900">
+        <p class="mt-4 text-2xl sm:text-4xl font-bold text-black-900 sm:pt-4">
           {{ weddingData.date }}
         </p>
       </div>
@@ -129,25 +132,23 @@ onUnmounted(() => {
       <!-- 2. RSVP Section -->
       <section id="rsvp" class="py-16 sm:py-24 bg-white border-b border-gray-100">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div class="text-gray-500 mb-4 flex justify-center">
-            <Mail :size="40" class="text-pink-600" />
+          <div class="text-black-500 mb-4 flex justify-center">
+            <Mail :size="40" class="text-blue-600" />
           </div>
           <h2
-            class="text-4xl font-serif text-gray-800 mb-12 border-b-2 border-pink-100 inline-block pb-1"
+            class="text-4xl font-serif text-black-800 mb-12 border-b-2 border-blue-100 inline-block pb-1"
           >
             Kindly RSVP
           </h2>
 
-          <p class="text-xl mb-8 leading-relaxed">
-            Please let us know if you can make it by our deadline:
-          </p>
-          <p class="text-2xl font-semibold text-gray-900 mb-8">
+          <p class="text-xl mb-8 leading-relaxed">Please let us know if you can make it by</p>
+          <p class="text-2xl font-semibold text-black-900 mb-8">
             {{ weddingData.rsvpDeadline }}
           </p>
 
           <a
             href="/rsvp"
-            class="inline-block px-10 py-4 text-xl font-bold text-white bg-pink-600 rounded-full shadow-lg hover:bg-pink-700 transition duration-300 transform hover:scale-105"
+            class="inline-block px-10 py-4 text-xl font-bold text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105"
             aria-label="Link to RSVP form"
           >
             Submit Your RSVP
@@ -158,11 +159,11 @@ onUnmounted(() => {
       <!-- 3. Gifts Section -->
       <section id="gifts" class="py-16 sm:py-24 bg-white border-b border-gray-100">
         <div class="max-w-4xl mx-auto px-2 sm:px-3 lg:px-2 text-center">
-          <div class="text-gray-500 mb-4 flex justify-center">
-            <Gift :size="40" class="text-pink-600" />
+          <div class="text-black-500 mb-4 flex justify-center">
+            <Gift :size="40" class="text-blue-600" />
           </div>
           <h2
-            class="text-4xl font-serif text-gray-800 mb-12 border-b-2 border-pink-100 inline-block pb-1"
+            class="text-4xl font-serif text-black-800 mb-12 border-b-2 border-blue-100 inline-block pb-1"
           >
             Gifts
           </h2>
@@ -179,7 +180,7 @@ onUnmounted(() => {
               rel="noopener noreferrer"
               class="block p-2"
             >
-              <span class="text-xl text-gray-800 block">{{ payment.name }}</span>
+              <span class="text-xl text-black-800 block">{{ payment.name }}</span>
             </a>
           </div>
         </div>
@@ -188,13 +189,13 @@ onUnmounted(() => {
       <!-- 4. Hotels Section -->
       <section id="hotels" class="py-16 sm:py-24 bg-white border-b border-gray-100">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div class="text-gray-500 mb-4 flex justify-center">
-            <Hotel :size="40" class="text-pink-600" />
+          <div class="text-black-500 mb-4 flex justify-center">
+            <Hotel :size="40" class="text-blue-600" />
           </div>
           <h2
-            class="text-4xl font-serif text-gray-800 mb-12 border-b-2 border-pink-100 inline-block pb-1"
+            class="text-4xl font-serif text-black-800 mb-12 border-b-2 border-blue-100 inline-block pb-1"
           >
-            Area Accommodations
+            Hotels
           </h2>
 
           <p class="text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
@@ -206,15 +207,15 @@ onUnmounted(() => {
               :key="index"
               class="w-full sm:w-80 p-6 bg-white rounded-xl shadow-lg border border-gray-200 text-left"
             >
-              <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ option.name }}</h3>
-              <p class="text-md text-gray-600 mb-4">
-                <span class="font-semibold text-pink-600">{{ option.rate }}</span>
+              <h3 class="text-2xl font-bold text-black-900 mb-2">{{ option.name }}</h3>
+              <p class="text-md text-black-600 mb-4">
+                <span class="font-semibold text-blue-600">{{ option.rate }}</span>
               </p>
               <a
                 :href="option.link"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-sm font-semibold text-pink-600 hover:text-pink-700 underline"
+                class="text-sm font-semibold text-blue-600 hover:text-blue-700 underline"
               >
                 Book Your Room &rarr;
               </a>
@@ -224,7 +225,7 @@ onUnmounted(() => {
       </section>
     </main>
 
-    <footer class="py-8 text-center text-gray-500 text-sm bg-gray-100">
+    <footer class="py-8 text-center text-black-500 text-sm bg-gray-100">
       &copy; 2026 {{ weddingData.coupleNames }}. We can't wait to celebrate with you!
     </footer>
   </div>
