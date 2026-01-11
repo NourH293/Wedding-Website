@@ -469,6 +469,10 @@ onMounted(() => {
           <p class="text-sm font-bold text-blue-800 flex items-center">
             <Hash class="w-4 h-4 mr-2" /> Maximum guests allowed: {{ maxFamilyGuests }}
           </p>
+          <p class="text-xs font-semibold text-blue-800 flex items-center">
+            Children under 3 are invited to sit with their parents or stay in a stroller; they will
+            not have individual chairs.
+          </p>
         </div>
 
         <!-- Response Form -->
@@ -541,6 +545,10 @@ onMounted(() => {
               Maximum capacity for your party is {{ maxFamilyGuests }} guest{{
                 maxFamilyGuests > 1 ? 's' : ''
               }}.
+            </p>
+            <p class="text-sm text-gray-500 mt-2">
+              Children under 3 are invited to sit with their parents or stay in a stroller; they
+              will not have individual chairs.
             </p>
           </div>
 
